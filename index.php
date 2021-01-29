@@ -32,18 +32,46 @@
     </div>
     <div>
       <h2>Display All Entries</h2>
-      <ul>
         <?php
+          echo "<table>";//start table
+          //creating our table heading
+          echo "<tr>";
+            echo "<th>ID</th>";
+            echo "<th>From</th>";
+            echo "<th>To</th>";
+            echo "<th>CR</th>";
+            echo "<th>Encounter</th>";
+          echo "</tr>";
           $con = new mysqli("localhost", $dbuser, $dbpass, $dbname);
-          $call = "SELECT make, model, year FROM cars";
+          $call = "SELECT id, start, stop, cr, encounter FROM encsewer";
           $answer = $con->query($call);
           while ($line = $answer->fetch_array(MYSQLI_ASSOC)) {
-            echo "<li><strong>" . $line["make"] . " " . $line["model"] . "</strong> (" . $line["year"] . ")" . ". </li>";
-          }
-          $con -> close();
+            echo "<tr>";
+              echo "<td>" . $line["id"] . "</td>";
+              echo "<td>" . $line["start"] . "</td>";
+              echo "<td>" . $line["stop"] . "</td>";
+              echo "<td>" . $line["cr"] . "</td>";
+              echo "<td>" . $line["encounter"] . "</td>";
+            echo "</tr>";
+        }
+        // end table
+        echo "</table>";
         ?>
-      </ul>
-      <hr />
+        <hr />
+    </div>
+    <div id="encounter">
+      <?php
+        if(array_key_exists('generate', $_POST)) {
+            generate();
+        }
+        function generate() {
+          $random = rand("0", "100");
+          echo "You encounter " . $random;
+        }
+    ?>
+    <form method="post">
+      <button name="generate">Generate</button>
+    </form>
     </div>
   </body>
 </html>
